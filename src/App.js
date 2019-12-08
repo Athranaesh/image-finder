@@ -7,6 +7,7 @@ import Navbar from './components/navbar/Navbar';
 import Search from './components/search/Search';
 import PixabayState from './context/pixabay/PixabayState';
 import './App.css';
+import ImageResults from './components/image-results/ImageResults';
 
 const theme = createMuiTheme({
   palette: {
@@ -25,6 +26,7 @@ const App = () => {
       <MuiThemeProvider theme={theme}>
         <Navbar />
         <Search />
+        <ImageResults />
       </MuiThemeProvider>
     </PixabayState>
   );

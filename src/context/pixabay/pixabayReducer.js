@@ -1,4 +1,4 @@
-import { SEARCH_PHOTOS } from '../types';
+import { SEARCH_PHOTOS, SET_QUERY, SET_AMOUNT } from '../types';
 
 export default (state, action) => {
   switch (action.type) {
@@ -6,6 +6,16 @@ export default (state, action) => {
       return {
         ...state,
         images: action.payload
+      };
+    case SET_QUERY:
+      return {
+        ...state,
+        query: action.payload
+      };
+    case SET_AMOUNT:
+      return {
+        ...state,
+        amount: action.payload
       };
 
     default:

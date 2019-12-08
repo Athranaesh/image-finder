@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useEffect, useContext } from 'react';
 import Container from '@material-ui/core/Container';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
@@ -6,22 +6,20 @@ import { Select, MenuItem, InputLabel, FormControl } from '@material-ui/core/';
 import PixabayContext from '../../context/pixabay/pixabayContext';
 
 const Search = () => {
-  const [text, setText] = useState('');
-  const [amount, setAmount] = useState(10);
   const pixabayContext = useContext(PixabayContext);
 
+  useEffect(() => {
+    pixabayContext.searchImages(pixabayContext.amount, pixabayContext.query);
+  }, [pixabayContext.amount, pixabayContext.query]);
+
+  //UseEffect is used because of the fact that state changes asynchronously and there may be lag in state changes. Use Effect will execute once the props passed in the brackets at the end are updated successfully, preventing wrong image display due to the lag. NOTE: The brackets are necessary, otherwise useEffect, at least in this project, will run infinitely and Pixabay will hate me as a result.
+
   const textOnChange = e => {
-    setText(e.target.value);
-    console.log(text);
-    console.log(amount);
-    if (text !== '') {
-      pixabayContext.searchImages(amount, text);
-    }
-    console.log(pixabayContext.images);
+    pixabayContext.setQuery(e.target.value);
   };
 
   const amountOnChange = e => {
-    setAmount(e.target.value);
+    pixabayContext.setAmount(e.target.value);
   };
 
   return (
@@ -43,7 +41,6 @@ const Search = () => {
         label='Amount'
         style={{ minWidth: 120, marginTop: 10 }}
         onChange={amountOnChange}
-        value={amount}
       >
         <MenuItem value={5}>5</MenuItem>
         <MenuItem value={10}>10</MenuItem>
