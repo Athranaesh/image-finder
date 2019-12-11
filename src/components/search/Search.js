@@ -1,25 +1,38 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import Container from '@material-ui/core/Container';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
-import { Select, MenuItem, InputLabel, FormControl } from '@material-ui/core/';
+import MenuItem from '@material-ui/core/MenuItem';
+import Button from '@material-ui/core/Button';
 import PixabayContext from '../../context/pixabay/pixabayContext';
 
 const Search = () => {
   const pixabayContext = useContext(PixabayContext);
+  const [initialized, setInitialized] = useState(false);
 
   useEffect(() => {
-    pixabayContext.searchImages(pixabayContext.amount, pixabayContext.query);
+    if (initialized) {
+      pixabayContext.searchImages(pixabayContext.amount, pixabayContext.query);
+    }
   }, [pixabayContext.amount, pixabayContext.query]);
 
   //UseEffect is used because of the fact that state changes asynchronously and there may be lag in state changes. Use Effect will execute once the props passed in the brackets at the end are updated successfully, preventing wrong image display due to the lag. NOTE: The brackets are necessary, otherwise useEffect, at least in this project, will run infinitely and Pixabay will hate me as a result.
 
   const textOnChange = e => {
-    pixabayContext.setQuery(e.target.value);
+    if (e.target.value === '') {
+      setTimeout(pixabayContext.clearImages, 150);
+    } else {
+      pixabayContext.setQuery(e.target.value);
+      setInitialized(true);
+    }
   };
 
   const amountOnChange = e => {
     pixabayContext.setAmount(e.target.value);
+  };
+
+  const clearImages = () => {
+    pixabayContext.clearImages();
   };
 
   return (
@@ -38,7 +51,7 @@ const Search = () => {
       <TextField
         select
         variant='outlined'
-        label='Amount'
+        label='Per Page'
         style={{ minWidth: 120, marginTop: 10 }}
         onChange={amountOnChange}
       >

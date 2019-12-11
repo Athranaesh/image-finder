@@ -1,4 +1,10 @@
-import { SEARCH_PHOTOS, SET_QUERY, SET_AMOUNT } from '../types';
+import {
+  SEARCH_PHOTOS,
+  SET_QUERY,
+  SET_AMOUNT,
+  CLEAR_IMAGES,
+  SET_CURRENTIMAGE
+} from '../types';
 
 export default (state, action) => {
   switch (action.type) {
@@ -16,6 +22,16 @@ export default (state, action) => {
       return {
         ...state,
         amount: action.payload
+      };
+    case CLEAR_IMAGES:
+      return {
+        ...state,
+        images: []
+      };
+    case SET_CURRENTIMAGE:
+      return {
+        ...state,
+        currentImage: action.payload
       };
 
     default:

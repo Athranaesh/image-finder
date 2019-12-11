@@ -13,7 +13,7 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center'
   },
   title: {
-    // fontFamily: 'Marmelad',
+    fontFamily: 'Marmelad',
     alignSelf: 'center',
     padding: theme.spacing(4)
   }
