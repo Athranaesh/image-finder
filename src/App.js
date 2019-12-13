@@ -3,11 +3,14 @@ import {
   ThemeProvider as MuiThemeProvider,
   createMuiTheme
 } from '@material-ui/core/styles';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Navbar from './components/navbar/Navbar';
-import Search from './components/search/Search';
+
 import PixabayState from './context/pixabay/PixabayState';
 import './App.css';
-import ImageResults from './components/image-results/ImageResults';
+
+import Home from './components/pages/Home';
+import Image from './components/pages/Image';
 
 const theme = createMuiTheme({
   palette: {
@@ -23,11 +26,15 @@ const theme = createMuiTheme({
 const App = () => {
   return (
     <PixabayState>
-      <MuiThemeProvider theme={theme}>
-        <Navbar />
-        <Search />
-        <ImageResults />
-      </MuiThemeProvider>
+      <Router>
+        <MuiThemeProvider theme={theme}>
+          <Navbar />
+          <Switch>
+            <Route exact path='/' component={Home} />
+            <Route exact path='/image/:id' component={Image} />
+          </Switch>
+        </MuiThemeProvider>
+      </Router>
     </PixabayState>
   );
 };

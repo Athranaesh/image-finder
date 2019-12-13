@@ -3,7 +3,9 @@ import {
   SET_QUERY,
   SET_AMOUNT,
   CLEAR_IMAGES,
-  SET_CURRENTIMAGE
+  SET_CURRENTIMAGE,
+  LOAD_MORE,
+  GET_IMAGE
 } from '../types';
 
 export default (state, action) => {
@@ -11,7 +13,8 @@ export default (state, action) => {
     case SEARCH_PHOTOS:
       return {
         ...state,
-        images: action.payload
+        images: action.payload.hits,
+        totalHits: action.payload.totalHits
       };
     case SET_QUERY:
       return {
@@ -29,6 +32,16 @@ export default (state, action) => {
         images: []
       };
     case SET_CURRENTIMAGE:
+      return {
+        ...state,
+        currentImage: action.payload
+      };
+    case LOAD_MORE:
+      return {
+        ...state,
+        images: action.payload
+      };
+    case GET_IMAGE:
       return {
         ...state,
         currentImage: action.payload

@@ -12,7 +12,7 @@ const Search = () => {
 
   useEffect(() => {
     if (initialized) {
-      pixabayContext.searchImages(pixabayContext.amount, pixabayContext.query);
+      pixabayContext.searchImages();
     }
   }, [pixabayContext.amount, pixabayContext.query]);
 
@@ -46,6 +46,7 @@ const Search = () => {
         margin='normal'
         fullWidth
         onChange={textOnChange}
+        defaultValue={pixabayContext.query}
       />
 
       <TextField
@@ -54,11 +55,11 @@ const Search = () => {
         label='Per Page'
         style={{ minWidth: 120, marginTop: 10 }}
         onChange={amountOnChange}
+        defaultValue={pixabayContext.amount}
       >
-        <MenuItem value={5}>5</MenuItem>
-        <MenuItem value={10}>10</MenuItem>
         <MenuItem value={15}>15</MenuItem>
-        <MenuItem value={30}>30</MenuItem>
+        <MenuItem value={20}>20</MenuItem>
+        <MenuItem value={35}>35</MenuItem>
         <MenuItem value={50}>50</MenuItem>
       </TextField>
     </Container>

@@ -7,10 +7,13 @@ import {
   SET_QUERY,
   SET_AMOUNT,
   CLEAR_IMAGES,
-  SET_CURRENTIMAGE
+  SET_CURRENTIMAGE,
+  LOAD_MORE,
+  GET_IMAGE
 } from '../types';
 
 let ClientId;
+let page = 1;
 
 if (process.env.NODE_ENV !== 'production') {
   ClientId = process.env.REACT_APP_PIXABAY_CLIENT_ID;
@@ -21,9 +24,11 @@ if (process.env.NODE_ENV !== 'production') {
 const PixabayState = props => {
   const initialState = {
     query: '',
-    amount: 10,
+    amount: 15,
     images: [],
-    currentImage: null
+    totalHits: null,
+    currentImage: {},
+    moreImages: []
   };
 
   const [state, dispatch] = useReducer(PixabayReducer, initialState);
@@ -31,29 +36,56 @@ const PixabayState = props => {
   //Clear images
 
   const clearImages = () => {
+    page = 1;
     dispatch({
       type: CLEAR_IMAGES
     });
   };
   //Search images
-  const searchImages = async (amount, text) => {
+  const searchImages = async (page = 1) => {
     const res = await axios.get(
-      `https://pixabay.com/api/?key=${ClientId}&q=${text}&image_type=photo&per_page=${amount}`
+      `https://pixabay.com/api/?key=${ClientId}&q=${state.query}&image_type=photo&page=${page}per_page=${state.amount}`
     );
 
     dispatch({
       type: SEARCH_PHOTOS,
-      payload: res.data.hits
+      payload: res.data
     });
     console.log(state.images);
+  };
+
+  const loadMore = async () => {
+    page++;
+    const res = await axios.get(
+      `https://pixabay.com/api/?key=${ClientId}&q=${state.query}&image_type=photo&page=${page}&per_page=${state.amount}`
+    );
+
+    dispatch({
+      type: LOAD_MORE,
+      payload: state.images.concat(res.data.hits)
+    });
+    console.log(state.moreImages);
   };
 
   //Set query
 
   const setQuery = text => {
+    page = 1;
     dispatch({
       type: SET_QUERY,
       payload: text
+    });
+  };
+
+  //Get Image
+
+  const getImage = async id => {
+    const res = await axios.get(
+      `https://pixabay.com/api/?key=${ClientId}&id=${id}`
+    );
+    dispatch({
+      type: GET_IMAGE,
+      payload: res.data.hits[0]
     });
   };
 
@@ -67,6 +99,7 @@ const PixabayState = props => {
   };
 
   const setAmount = amount => {
+    page = 1;
     dispatch({
       type: SET_AMOUNT,
       payload: amount
@@ -84,7 +117,10 @@ const PixabayState = props => {
         setQuery,
         setAmount,
         clearImages,
-        setCurrentImage
+        setCurrentImage,
+        loadMore,
+        totalHits: state.totalHits,
+        getImage
       }}
     >
       {props.children}
