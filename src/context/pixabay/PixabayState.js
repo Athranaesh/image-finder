@@ -13,14 +13,14 @@ import {
   SET_SORT
 } from '../types';
 
-let ClientId;
+const ClientId = process.env.REACT_APP_PIXABAY_CLIENT_ID;
 let page = 1;
 
-if (process.env.NODE_ENV !== 'production') {
-  ClientId = process.env.REACT_APP_PIXABAY_CLIENT_ID;
-} else {
-  ClientId = process.env.PIXABAY_CLIENT_ID;
-}
+// if (process.env.NODE_ENV !== 'production') {
+//   ClientId = process.env.REACT_APP_PIXABAY_CLIENT_ID;
+// } else {
+//   ClientId = process.env.PIXABAY_CLIENT_ID;
+// }
 
 const PixabayState = props => {
   const initialState = {
