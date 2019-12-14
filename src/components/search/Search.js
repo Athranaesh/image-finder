@@ -19,6 +19,7 @@ const Search = () => {
   const textOnChange = e => {
     if (e.target.value === '') {
       setInitialized(false);
+      pixabayContext.setQuery(e.target.value);
       setTimeout(pixabayContext.clearImages, 150);
     } else {
       pixabayContext.setQuery(e.target.value);
