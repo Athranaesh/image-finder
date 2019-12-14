@@ -5,7 +5,8 @@ import {
   CLEAR_IMAGES,
   SET_CURRENTIMAGE,
   LOAD_MORE,
-  GET_IMAGE
+  GET_IMAGE,
+  SET_SORT
 } from '../types';
 
 export default (state, action) => {
@@ -45,6 +46,11 @@ export default (state, action) => {
       return {
         ...state,
         currentImage: action.payload
+      };
+    case SET_SORT:
+      return {
+        ...state,
+        sort: action.payload
       };
 
     default:

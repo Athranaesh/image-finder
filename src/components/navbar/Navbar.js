@@ -1,32 +1,67 @@
 import React from 'react';
 import AppBar from '@material-ui/core/AppBar/AppBar';
-import { makeStyles } from '@material-ui/core/styles';
+import Grid from '@material-ui/core/Grid';
+
 import Typography from '@material-ui/core/Typography';
-
-//Custom styling for the App Bar.
-
-const useStyles = makeStyles(theme => ({
-  root: {
-    flexGrow: 1
-  },
-  appbar: {
-    alignItems: 'center'
-  },
-  title: {
-    fontFamily: 'Marmelad',
-    alignSelf: 'center',
-    padding: theme.spacing(4)
-  }
-}));
+import Container from '@material-ui/core/Container';
+import Link from 'react-router-dom/Link';
 
 const Navbar = () => {
-  const classes = useStyles();
   return (
-    <div className={classes.root}>
-      <AppBar position='static' className={classes.appbar}>
-        <Typography className={classes.title} variant='h5' align='center'>
-          PixaBay Image Finder
-        </Typography>
+    <div>
+      <AppBar position='static' style={{ paddingTop: 30, paddingBottom: 30 }}>
+        <Container>
+          <Grid
+            container
+            alignItems='center'
+            justify='space-between'
+            spacing={2}
+          >
+            <Grid item>
+              <Typography variant='h6'>
+                <Link
+                  className='title'
+                  to='/'
+                  style={{
+                    textDecoration: 'none',
+                    color: 'white'
+                  }}
+                >
+                  <i
+                    className={'fas fa-camera'}
+                    style={{ marginRight: 10 }}
+                  ></i>
+                  PixaFinder
+                </Link>
+              </Typography>
+            </Grid>
+            <Grid item>
+              <Link
+                to='/'
+                style={{
+                  fontSize: 22,
+                  textDecoration: 'none',
+                  color: 'white',
+                  marginRight: 14
+                }}
+              >
+                Home
+              </Link>
+
+              <Link
+                to='/About'
+                style={{
+                  fontSize: 22,
+                  textDecoration: 'none',
+                  color: 'white',
+                  marginLeft: 14
+                }}
+              >
+                About
+              </Link>
+            </Grid>
+          </Grid>
+        </Container>
       </AppBar>
     </div>
   );

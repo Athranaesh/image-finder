@@ -9,7 +9,8 @@ import {
   CLEAR_IMAGES,
   SET_CURRENTIMAGE,
   LOAD_MORE,
-  GET_IMAGE
+  GET_IMAGE,
+  SET_SORT
 } from '../types';
 
 let ClientId;
@@ -28,7 +29,8 @@ const PixabayState = props => {
     images: [],
     totalHits: null,
     currentImage: {},
-    moreImages: []
+    moreImages: [],
+    sort: 'popular'
   };
 
   const [state, dispatch] = useReducer(PixabayReducer, initialState);
@@ -43,28 +45,38 @@ const PixabayState = props => {
   };
   //Search images
   const searchImages = async (page = 1) => {
-    const res = await axios.get(
-      `https://pixabay.com/api/?key=${ClientId}&q=${state.query}&image_type=photo&page=${page}per_page=${state.amount}`
-    );
+    if (state.query !== '') {
+      const res = await axios.get(
+        `https://pixabay.com/api/?key=${ClientId}&q=${state.query}&order=${state.sort}&image_type=photo&page=${page}&per_page=${state.amount}`
+      );
 
-    dispatch({
-      type: SEARCH_PHOTOS,
-      payload: res.data
-    });
-    console.log(state.images);
+      dispatch({
+        type: SEARCH_PHOTOS,
+        payload: res.data
+      });
+    }
   };
 
   const loadMore = async () => {
     page++;
     const res = await axios.get(
-      `https://pixabay.com/api/?key=${ClientId}&q=${state.query}&image_type=photo&page=${page}&per_page=${state.amount}`
+      `https://pixabay.com/api/?key=${ClientId}&q=${state.query}&order=${state.sort}&image_type=photo&page=${page}&per_page=${state.amount}`
     );
 
     dispatch({
       type: LOAD_MORE,
       payload: state.images.concat(res.data.hits)
     });
-    console.log(state.moreImages);
+  };
+
+  //Set sort order
+
+  const setSort = order => {
+    page = 1;
+    dispatch({
+      type: SET_SORT,
+      payload: order
+    });
   };
 
   //Set query
@@ -120,7 +132,9 @@ const PixabayState = props => {
         setCurrentImage,
         loadMore,
         totalHits: state.totalHits,
-        getImage
+        getImage,
+        sort: state.sort,
+        setSort
       }}
     >
       {props.children}

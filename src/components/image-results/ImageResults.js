@@ -32,7 +32,6 @@ const ImageResults = () => {
         dataLength={pixabayContext.images.length}
         next={pixabayContext.loadMore}
         hasMore={pixabayContext.totalHits > pixabayContext.images.length}
-        loader={<h4>Loading...</h4>}
       >
         <Grid container direction='row' justify='center' alignItems='center'>
           {pixabayContext.images.map(image => (
